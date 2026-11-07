@@ -1,0 +1,35 @@
+Setup: folder, venv.
+
+Step 1 — data: 2 stages.
+
+Stage 1 — dataset profiling (investigate_pdfs.py)
+
+Folder + manifest.csv pe structural checks:
+
+kitni PDFs, filenames
+years (filename vs period)
+duplicate names / doc_id
+manifest vs disk match
+types: 10-K, 10-Q, 8-K, Earnings
+same company+year pe multiple docs
+readable vs crash (AES/cryptography)
+Result: same company+year pe kai files milin. Tumne yeh duplicate nahi maana — types/dates alag ho sakte hain.
+
+Notes mein Script 1 ka naam investigate_duplicate_pdfs.py likha hai; pehli inventory wali investigate_pdfs.py hai.
+
+Stage 2 — duplicate candidates (investigate_duplicate_pdfs.py → data/duplicate_investigation.csv)
+
+Content compare:
+
+10k aur 10k_annualreport same category
+alag quarter skip
+alag 8-K date = review, compare nahi
+text + SHA256 + similarity %
+CSV:
+
+Pair	Status
+AMD 2022 10-K vs annual report
+87.16% similar, 121 vs 122 pages — review, auto-remove nahi
+Best Buy / J&J / MGM / PepsiCo / Ulta 8-K pairs
+different dates — NOT COMPARED
+Rule jo notes mein hai: company+year same hone se file delete nahi.
